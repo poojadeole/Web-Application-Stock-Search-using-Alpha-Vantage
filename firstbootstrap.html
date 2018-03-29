@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js"></script>
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+  <style>
+  body{
+      background-image: url("http://cs-server.usc.edu:45678/hw/hw8/images/background.png");
+  }
+  #heading{
+    text-align: center;
+    margin-left: 400px;
+  }
+
+
+  tr td{
+    border-left: 0px solid ;
+   border-right: 0px solid ;
+  }
+  table{
+    border-left: 0px solid ;
+   border-right: 0px solid ;
+  }
+
+.ng-hide {
+  height: 0;
+  width: 0;
+  background-color: transparent;
+  top:-200px;
+  left: 200px;
+}
+#stockDetails{
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  margin-top: 7px;
+}
+/*.navbar-nav li a:hover, .navbar-nav > .visited > a {
+  border-left: 1px solid #DCDCDC !important;
+  border-top: 1px solid #DCDCDC !important;
+  border-right: 1px solid #DCDCDC !important;
+}*/
+/*.progress{
+  visibility: hidden;
+}*/
+.progress{
+  visibility: hidden;
+}
+
+#second_div{
+  display: none;
+}
+
+@media (max-width: 767px) {
+    .col-sm-4 {
+        margin-top:20px;
+    }
+    .col-sm-8{
+      width:160px;
+    }
+  #autoHide { display: none; }
+}
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+  .nav {
+    width:100%;
+  }
+  .nav-item {
+    width:50px;
+  }
+}
+
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="http://code.highcharts.com/highcharts.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-animate.js"></script>
+  <script type="text/javascript" src="angularscript.js"></script>
+  <!-- <script type="text/javascript" src="scriptJS.js"></script> -->
+
+</head>
+<body ng-controller="customerSearchCtrl as ctrl">
+  <div class="container" style="margin-top:10px;" >
+  <div class="well row">
+    <div class="row">
+      <div class="col-md-12 col-sm-12" style="text-align:center">
+        <b>Stock Market Search</b>
+      </div>
+    </div>
+    <div class="row">
+      <form class="form-inline" id="idForm">
+        <div class="form-group col-md-12 col-sm-12">
+        <div class="col-md-3 col-sm-3">
+        <label for="usr">Enter Stock Ticker Symbol:*</label>
+      </div>
+      <div class="col-md-5 col-sm-5">
+        <input client-auto-complete type="text" class="form-control" ng-model="ctrl.client.name" id="usr" placeholder="eg.AAPL" style="width:350px;">
+        <input client-auto-complete type="hidden" class="form-control"  ng-model="ctrl.client.id" id="usr" placeholder="eg.AAPL" style="width:350px;">
+      </div>
+      <div class="col-md-4 col-sm-4">
+        <button id="submitButton" onclick="onButton()" type="button" class="btn btn-info">
+          <span class="glyphicon glyphicon-search"></span> Get Quote
+        </button>
+        <button type="button" class="btn btn-info">
+          <span class="glyphicon glyphicon-refresh"></span> Clear
+        </button>
+      </div>
+      </form>
+    </div>
+</div></div>
+<hr></hr>
+</div>
+
+<div class="container" id="first_div">
+  <div class="well row">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-8 col-xs-6">
+            <b>Favorite List</b>
+        </div>
+        <div class="col-md-4 col-xs-6">
+          <span id="autoHide">Automatic Refresh:</span>
+          <div class="checkbox-inline">
+            <label>
+              <<input type="checkbox" checked data-toggle="toggle" data-size="mini">
+              <button type="button" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-refresh"></span>
+              </button>
+              <button type="button" class="btn btn-default btn-sm">
+              <span class="glyphicon glyphicon-chevron-right"></span>
+            </button>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class= "col-md-2">
+            <b>Sort by</b>
+          </div>
+          <div class="col-md-4">
+              <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Default
+                  <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Normal</a></li>
+                    <li class="disabled"><a href="#">Disabled</a></li>
+                    <li class="active"><a href="#">Active</a></li>
+                    <li><a href="#">Normal</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class= "col-md-2">
+                <b>Order by</b>
+              </div>
+              <div class="col-md-4">
+                <div class="dropdown">
+                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Ascending
+                    <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                      <li><a href="#">Normal</a></li>
+                      <li class="disabled"><a href="#">Disabled</a></li>
+                      <li class="active"><a href="#">Active</a></li>
+                      <li><a href="#">Normal</a></li>
+                    </ul>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+            <div class="table-responsive" style="border-top:1px solid #DCDCDC; margin-top:10px;">
+                 <table class="table">
+                   <thead>
+                     <tr style="border:none;">
+                       <th>Symbol</th>
+                       <th>Stock Price</th>
+                       <th>Change(Change Percent)</th>
+                       <th>Volume</th>
+                     </tr>
+                   </thead>
+                 </table>
+                 </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+
+<div class="container" id="second_div">
+  <div class="well row">
+    <div class="panel panel-default">
+    <div class="panel-heading">
+      <div class="row">
+      <div class="col-md-5 col-xs-4">
+      <button type="button" class="btn btn-default btn-sm">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+        </button>
+      </div>
+      <div class="col-md-4 col-xs-8">
+      <b>Stock Details</b>
+    </div>
+  </div>
+    </div>
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-5 col-xs-12">
+        <div class="col-md-4 col-xs-4">
+          <a href="#" class="btn btn-info btn-sm">
+            <small><span class="glyphicon glyphicon-dashboard"></span> <span style="font-size: 13px; margin-top:100px;">Current Stock</span></small>
+          </a>
+      </div>
+      <div class="col-md-4 col-xs-4">
+        <button type="button" class="btn btn-default btn-sm" style="border: none; color:#3B6FA7;">
+          <span class="glyphicon glyphicon-stats"></span> <span style="font-size: 13px; color:#3B6FA7;">Historical Charts</span>
+        </button>
+    </div>
+      <div class="col-md-4 col-xs-4">
+        <button type="button" class="btn btn-default btn-sm" style="border: none; color:#3B6FA7;">
+          <span class="glyphicon glyphicon-link"></span> <span style="font-size: 13px; color:#3B6FA7;">News Feeds</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <hr></hr>
+  <div class="row">
+    <div class="container col-md-6">
+      <div class="row">
+        <div class="col-md-8">
+          <b>Stock Details</b>
+        </div>
+        <div class="col-md-4">
+          <button type="button" class="btn btn-default btn-sm">
+           <span style="font-size:1.5em;" class="glyphicon glyphicon-star-empty"></span>
+         </button>
+         <button type="button" class="btn btn-default btn-sm">
+           <img src="http://cs-server.usc.edu:45678/hw/hw8/images/facebook.png" style="width:25px; height:25px;">
+         </button>
+         <div id="fb-root"></div>
+         <img src = "http://cs-server.usc.edu:45678/hw/hw8/images/facebook.png" id = "share_button">
+         </div>
+        </div>
+      </div>
+      <div class="container" id="appendTable"></div>
+    </div>
+    <div class="container col-md-6">
+      <nav class="navbar navbar-default" style="border:none; background-color:white;">
+        <ul class="nav navbar-nav">
+        <li class="nav-item"><a href="#" onclick="priceCallback(); createTable();" style="color:#3B6FA7; margin-right:10px;">Price</a></li>
+        <li class="nav-item"><a href="#" id="smaClick" onclick="smaCallback()" style="color:#3B6FA7; margin-right:10px;">SMA</a></li>
+        <li class="nav-item"><a href="#" id="emaClick" onclick="emaCallback()" style="color:#3B6FA7; margin-right:10px;">EMA</a></li>
+        <li class="nav-item"><a href="#" onclick="stochCallback()" style="color:#3B6FA7; margin-right:10px;">STOCH</a></li>
+        <li class="nav-item"><a href="#" onclick="rsiCallback()" style="color:#3B6FA7; margin-right:10px;">RSI</a></li>
+        <li class="nav-item"><a href="#" onclick="adxCallback()" style="color:#3B6FA7; margin-right:10px;">ADX</a></li>
+        <li class="nav-item"><a href="#" onclick="cciCallback()" style="color:#3B6FA7; margin-right:10px;">CCI</a></li>
+        <li class="nav-item"><a href="#" onclick="bbandsCallback()" style="color:#3B6FA7; margin-right:10px;">BBANDS</a></li>
+        <li class="nav-item"><a href="#" onclick="macdCallback()" style="color:#3B6FA7; margin-right:10px;">MACD</a></li>
+        </ul>
+      </nav>
+      <div class="row">
+      <div class="container col-md-12" id="renderContainer"> </div>
+    </div>
+
+  </div>
+  </div>
+
+<script>
+
+
+window.fbAsyncInit = function() {
+FB.init({appId: '1660572927328754', status: true, cookie: true,
+xfbml: true});
+};
+(function() {
+var e = document.createElement('script'); e.async = true;
+e.src = document.location.protocol +
+'//connect.facebook.net/en_US/all.js';
+document.getElementById('fb-root').appendChild(e);
+}());
+
+$(document).ready(function(){
+$('#share_button').click(function(e){
+e.preventDefault();
+FB.ui(
+{
+method: 'feed',
+name: 'This is the content of the "name" field.',
+link: 'http://viratgaywala.blogspot.in/2014/05/how-to-add-facebook-share-button-to.html',
+//picture: ‘http://cs-server.usc.edu:45678/hw/hw6/images/Green_Arrow_Up.png’,
+caption: 'Top 3 reasons why you should care about your finance',
+//description: What happens when you don't take care of your finances? Just look at our country -- you spend irresponsibly, get in debt up to your eyeballs, and stress about how you're going to make ends meet. The difference is that you don't have a glut of taxpayers…',
+message: ''
+});
+});
+});
+
+var smaData = null;
+var emaData = null;
+var stochData = null;
+var rsiData = null;
+var adxData = null;
+var cciData = null;
+var bbandsData = null;
+var macdData = null;
+var priceData = null;
+
+function testEMA(data){
+  emaData = data;
+}
+function testSMA(data){
+  smaData = data;
+}
+
+function testSTOCH(data){
+   stochData = data;
+}
+
+function testRSI(data){
+  rsiData = data;
+}
+function testADX(data){
+  adxData = data;
+}
+
+function testCCI(data){
+  cciData = data;
+}
+
+function testBBANDS(data){
+  bbandsData = data;
+}
+
+function testMACD(data){
+  macdData = data;
+}
+function testPrice(data){
+  priceData = data;
+}
+
+
+function pooja(id,name){
+
+    var url = "http://localhost:3000/"; // the script where you handle the form input.
+
+    $.ajax({
+           type: "GET",
+           url: url,
+           crossDomain:true,
+
+           data: {symbol:id,indicator:name}, // serializes the form's elements.
+           success: function (data){
+             if(name=="SMA"){
+               testSMA(data);
+             }
+             else if(name == "EMA"){
+             testEMA(data);
+           }
+           else if(name == "STOCH"){
+             testSTOCH(data);
+           }
+           else if(name ==  "RSI"){
+             testRSI(data);
+           }
+           else if(name ==  "ADX"){
+             testADX(data);
+           }
+           else if(name ==  "CCI"){
+             testCCI(data);
+           }
+           else if(name ==  "BBANDS"){
+             testBBANDS(data);
+           }
+           else if(name ==  "MACD"){
+             testMACD(data);
+           }
+           else if(name == "Price"){
+             testPrice(data);
+           }
+           },
+         });
+}
+
+
+function onButton(){
+  document.getElementById("first_div").style.display = "none";
+  document.getElementById("second_div").style.display = "block";
+  pooja("AAPL","Price");
+  pooja("AAPL","SMA");
+  pooja("AAPL","EMA");
+  pooja("AAPL","STOCH");
+  pooja("AAPL","RSI");
+  pooja("AAPL","ADX");
+  pooja("AAPL","CCI");
+  pooja("AAPL","BBANDS");
+  pooja("AAPL","MACD");
+}
+
+
+function emaCallback(){
+  if(!emaData){
+      //document.getElementsByClassName('progress')[0].style.visibility = "visible";
+  }
+  else{
+    //document.getElementsByClassName('progress')[0].style.visibility = "hidden";
+  var tick = "AAPL";
+  var values = emaData['Technical Analysis: EMA'];
+  var dates = [];
+  var smaplot = [];
+  var currentDate = new Date(emaData['Meta Data']['3: Last Refreshed']);
+  //document.write(currentDate);
+//  document.write(value["Meta Data"]["1: Symbol"]);
+  currentDate.setMonth(currentDate.getMonth() - 6);
+
+  for(var key in values){
+    var previousDate = new Date(key);
+    if(previousDate > currentDate){
+    dates.push(Date.parse(key));
+    var key1 = values[key];
+    if(typeof key1 === 'object'){
+      for(var key2 in values[key]){
+      var result = parseFloat((parseFloat(values[key][key2])).toFixed(2));
+                smaplot.push(result);
+      }
+    }
+  }
+  }
+
+
+  var chart = new Highcharts.Chart({
+     chart: {
+         renderTo: 'renderContainer',
+         type: 'spline',
+         borderColor: '#f5f5f5',
+         borderWidth: 2
+     },
+     title: {
+         text: 'Exponential Moving Average(EMA)'
+     },
+     subtitle: {
+       text: 'Source: <a href="https://www.alphavantage.co/"> Alpha Vantage</a>',
+       style: {
+        color: '#3333FF'
+    }
+    },
+
+     xAxis: {
+   categories: dates,
+   tickInterval:5,
+   reversed: true,
+   labels: {
+       format: '{value:%m/%d}',
+   }
+   },
+
+     yAxis: {
+         title: {
+             text: 'EMA'
+         }
+     },
+     legend: {
+         layout: 'vertical',
+         align: 'right',
+         verticalAlign: 'middle'
+     },
+     tooltip: {
+              headerFormat: '<span style="font-size: 10px">{point.key:%m/%d}</span><br/>'
+            },
+
+     series: [{
+       name: tick,
+       data: smaplot,
+       color: '#FF0000',
+       marker: {
+           symbol: 'square',
+           lineColor: null,
+
+       }
+     }],
+
+     plotOptions:{
+       spline:{
+         marker:{
+           radius: 2,
+           lineWidth:1
+         }
+       }
+     }
+
+
+   }
+  );
+}
+}
+
+function smaCallback(){
+  if(!smaData){
+  //  document.getElementsByClassName('progress')[0].style.visibility = "visible";
+  }
+  else{
+//  document.getElementsByClassName('progress')[0].style.visibility = "hidden";
+  console.log(smaData["Meta Data"]["2: Indicator"]);
+  var tick = "AAPL";
+  var values = smaData['Technical Analysis: SMA'];
+  var dates = [];
+  var smaplot = [];
+  var currentDate = new Date(smaData['Meta Data']['3: Last Refreshed']);
+  //document.write(currentDate);
+//  document.write(value["Meta Data"]["1: Symbol"]);
+  currentDate.setMonth(currentDate.getMonth() - 6);
+
+  for(var key in values){
+    var previousDate = new Date(key);
+    if(previousDate > currentDate){
+    dates.push(Date.parse(key));
+    var key1 = values[key];
+    if(typeof key1 === 'object'){
+      for(var key2 in values[key]){
+      var result = parseFloat((parseFloat(values[key][key2])).toFixed(2));
+                smaplot.push(result);
+      }
+    }
+  }
+  }
+
+
+  var chart = new Highcharts.Chart({
+     chart: {
+         renderTo: 'renderContainer',
+         type: 'spline',
+         borderColor: '#f5f5f5',
+         borderWidth: 2
+     },
+     title: {
+         text: 'Simple Moving Average(SMA)'
+     },
+     subtitle: {
+       text: 'Source: <a href="https://www.alphavantage.co/"> Alpha Vantage</a>',
+       style: {
+        color: '#3333FF'
+    }
+    },
+
+     xAxis: {
+   categories: dates,
+   tickInterval:5,
+   reversed: true,
+   labels: {
+       format: '{value:%m/%d}',
+   }
+   },
+
+     yAxis: {
+         title: {
+             text: 'EMA'
+         }
+     },
+     legend: {
+         layout: 'vertical',
+         align: 'right',
+         verticalAlign: 'middle'
+     },
+     tooltip: {
+              headerFormat: '<span style="font-size: 10px">{point.key:%m/%d}</span><br/>'
+            },
+
+     series: [{
+       name: tick,
+       data: smaplot,
+       color: '#FF0000',
+       marker: {
+           symbol: 'square',
+           lineColor: null,
+
+       }
+     }],
+
+     plotOptions:{
+       spline:{
+         marker:{
+           radius: 2,
+           lineWidth:1
+         }
+       }
+     }
+
+
+   }
+  );
+}
+}
+
+function stochCallback(){
+  if(!stochData){
+    //  document.getElementsByClassName('progress')[0].style.visibility = "visible";
+  }
+  else{
+//  document.getElementsByClassName('progress')[0].style.visibility = "hidden";
+  var values = stochData['Technical Analysis: STOCH'];
+  var slowD = [];
+  var slowK = [];
+  var dates = [];
+  var currentDate = new Date(stochData['Meta Data']['3: Last Refreshed']);
+  currentDate.setMonth(currentDate.getMonth() - 6);
+  var tick = "AAPL";
+
+  for(var key in values){
+    var previousDate = new Date(key);
+
+    if(previousDate > currentDate){
+    dates.push(Date.parse(key));
+    var resultK = parseFloat((parseFloat(values[key]["SlowK"])).toFixed(2));
+    slowK.push(resultK);
+    var resultD = parseFloat((parseFloat(values[key]["SlowD"])).toFixed(2));
+    slowD.push(resultD);
+
+
+  }
+  }
+
+
+  // alert(finalarr);
+  var chart = new Highcharts.Chart({
+     chart: {
+         renderTo: 'renderContainer',
+         type: 'spline',
+         borderColor: '#f5f5f5',
+         borderWidth: 2
+
+     },
+     title: {
+         text: 'Stochastic Oscillator (STOCH)'
+     },
+     subtitle: {
+       text: 'Source: <a href="https://www.alphavantage.co/"> Alpha Vantage</a>',
+       style: {
+        color: '#3333FF'
+    }
+    },
+
+     xAxis: {
+   categories: dates,
+   tickInterval:5,
+   reversed: true,
+   labels: {
+       format: '{value:%m/%d}',
+   }
+   },
+
+     yAxis: {
+         title: {
+             text: 'STOCH'
+         },
+         tickInterval: 10,
+         min: 10,
+         startOnTick: false
+     },
+     legend: {
+         layout: 'vertical',
+         align: 'right',
+         verticalAlign: 'middle'
+     },
+     tooltip: {
+              headerFormat: '<span style="font-size: 10px">{point.key:%m/%d}</span><br/>'
+            },
+
+     series: [{
+       name: tick+' SlowK',
+       data: slowK,
+       color: '#FF0000',
+       marker: {
+           symbol: 'square',
+           lineColor: null,
+
+       }
+     },
+   {
+     name: tick+' SlowD',
+     data: slowD,
+     color: '#0FC5E6',
+     marker: {
+         symbol: 'square',
+         lineColor: null,
+
+     }
+
+   }],
+
+     plotOptions:{
+       spline:{
+         marker:{
+           radius: 2,
+           lineWidth:1
+         }
+       }
+     }
+
+
+   }
+  );
+}
+}
+
+function rsiCallback(){
+  if(!rsiData){
+  //  document.getElementsByClassName('progress')[0].style.visibility = "visible";
+  }
+  else{
+//  document.getElementsByClassName('progress')[0].style.visibility = "hidden";
+  console.log(rsiData['Meta Data']['3: Last Refreshed']);
+  var values = rsiData['Technical Analysis: RSI'];
+  var tick= "AAPL";
+  var dates = [];
+  var rsiplot = [];
+  var currentDate = new Date(rsiData['Meta Data']['3: Last Refreshed']);
+  currentDate.setMonth(currentDate.getMonth() - 6);
+
+  for(var key in values){
+    var previousDate = new Date(key);
+
+    if(previousDate > currentDate){
+    dates.push(Date.parse(key));
+    var key1 = values[key];
+    if(typeof key1 === 'object'){
+      for(var key2 in values[key]){
+
+        var result = parseFloat((parseFloat(values[key][key2])).toFixed(2));
+        rsiplot.push(result);
+
+      }
+    }
+  }
+  }
+
+
+  // alert(finalarr);
+  var chart = new Highcharts.Chart({
+     chart: {
+         renderTo: 'renderContainer',
+         type: 'spline',
+         borderColor: '#f5f5f5',
+         borderWidth: 2
+     },
+     title: {
+         text: 'Relative Strength Index (RSI)'
+     },
+     subtitle: {
+       text: 'Source: <a href="https://www.alphavantage.co/"> Alpha Vantage</a>',
+       style: {
+        color: '#3333FF'
+    }
+    },
+
+     xAxis: {
+   categories: dates,
+   tickInterval:5,
+   reversed: true,
+   labels: {
+       format: '{value:%m/%d}',
+   }
+   },
+
+     yAxis: {
+         title: {
+             text: 'RSI'
+         }
+     },
+     legend: {
+         layout: 'vertical',
+         align: 'right',
+         verticalAlign: 'middle'
+     },
+     tooltip: {
+              headerFormat: '<span style="font-size: 10px">{point.key:%m/%d}</span><br/>'
+            },
+
+     series: [{
+       name: tick,
+       data: rsiplot,
+       color: '#FF0000',
+       marker: {
+           symbol: 'square',
+           lineColor: null,
+
+       }
+     }],
+
+     plotOptions:{
+       spline:{
+         marker:{
+           radius: 2,
+           lineWidth:1
+         }
+       }
+     }
+
+
+   }
+  );
+}
+}
+
+function adxCallback(){
+  if(!adxData){
+  //  document.getElementsByClassName('progress')[0].style.visibility = "visible";
+  }
+  else{
+//  document.getElementsByClassName('progress')[0].style.visibility = "hidden";
+  var values = adxData['Technical Analysis: ADX'];
+  var tick= "AAPL";
+  var dates = [];
+  var adxplot = [];
+  var currentDate = new Date(adxData['Meta Data']['3: Last Refreshed']);
+  currentDate.setMonth(currentDate.getMonth() - 6);
+
+  for(var key in values){
+    var previousDate = new Date(key);
+
+    if(previousDate > currentDate){
+    dates.push(Date.parse(key));
+    var key1 = values[key];
+    if(typeof key1 === 'object'){
+      for(var key2 in values[key]){
+
+        var result = parseFloat((parseFloat(values[key][key2])).toFixed(2));
+        adxplot.push(result);
+      }
+    }
+  }
+  }
+
+
+  // alert(finalarr);
+
+
+  var chart = new Highcharts.Chart({
+     chart: {
+         renderTo: 'renderContainer',
+         type: 'spline',
+         borderColor: '#f5f5f5',
+         borderWidth: 2
+     },
+     title: {
+         text: 'Average Directional Movement indeX (ADX)'
+     },
+     subtitle: {
+       text: 'Source: <a href="https://www.alphavantage.co/"> Alpha Vantage</a>',
+       style: {
+        color: '#3333FF'
+    }
+    },
+
+     xAxis: {
+   categories: dates,
+   tickInterval:5,
+   reversed: true,
+   labels: {
+       format: '{value:%m/%d}',
+   }
+   },
+
+     yAxis: {
+         title: {
+             text: 'ADX'
+         }
+     },
+     legend: {
+         layout: 'vertical',
+         align: 'right',
+         verticalAlign: 'middle'
+     },
+     tooltip: {
+              headerFormat: '<span style="font-size: 10px">{point.key:%m/%d}</span><br/>'
+            },
+
+     series: [{
+       name: tick,
+       data: adxplot,
+       color: '#FF0000',
+       marker: {
+           symbol: 'square',
+           lineColor: null,
+
+       }
+     }],
+
+     plotOptions:{
+       spline:{
+         marker:{
+           radius: 2,
+           lineWidth:1
+         }
+       }
+     }
+
+
+   }
+  );
+}
+}
+
+function cciCallback(){
+  if(!cciData){
+  //  document.getElementsByClassName('progress')[0].style.visibility = "visible";
+  }
+  else{
+  //    document.getElementsByClassName('progress')[0].style.visibility = "hidden";
+  var values = cciData['Technical Analysis: CCI'];
+  var tick= "AAPL";
+  var dates = [];
+  var cciplot = [];
+  var currentDate = new Date(cciData['Meta Data']['3: Last Refreshed']);
+  currentDate.setMonth(currentDate.getMonth() - 6);
+
+  for(var key in values){
+    var previousDate = new Date(key);
+
+    if(previousDate > currentDate){
+    dates.push(Date.parse(key));
+    var key1 = values[key];
+    if(typeof key1 === 'object'){
+      for(var key2 in values[key]){
+
+        var result = parseFloat((parseFloat(values[key][key2])).toFixed(2));
+        cciplot.push(result);
+      }
+    }
+  }
+  }
+
+
+  // alert(finalarr);
+  var chart = new Highcharts.Chart({
+     chart: {
+         renderTo: 'renderContainer',
+         type: 'spline',
+         borderColor: '#f5f5f5',
+         borderWidth: 2
+     },
+     title: {
+         text: 'Commodity Channel Index (CCI)'
+     },
+     subtitle: {
+       text: 'Source: <a href="https://www.alphavantage.co/"> Alpha Vantage</a>',
+       style: {
+        color: '#3333FF'
+    }
+    },
+
+     xAxis: {
+   categories: dates,
+   tickInterval:5,
+   reversed: true,
+   labels: {
+       format: '{value:%m/%d}',
+   }
+   },
+
+     yAxis: {
+         title: {
+             text: 'CCI'
+         }
+     },
+     legend: {
+         layout: 'vertical',
+         align: 'right',
+         verticalAlign: 'middle'
+     },
+     tooltip: {
+              headerFormat: '<span style="font-size: 10px">{point.key:%m/%d}</span><br/>'
+            },
+
+     series: [{
+       name: tick,
+       data: cciplot,
+       color: '#FF0000',
+       marker: {
+           symbol: 'square',
+           lineColor: null,
+
+       }
+     }],
+
+     plotOptions:{
+       spline:{
+         marker:{
+           radius: 2,
+           lineWidth:1
+         }
+       }
+     }
+
+
+   }
+  );
+}
+}
+
+function bbandsCallback(){
+  if(!bbandsData){
+  //  document.getElementsByClassName('progress')[0].style.visibility = "visible";
+  }
+  else{
+  // if(document.getElementById("renderContainer").style.visibility = "hidden")
+  // document.getElementById("renderContainer").style.visibility = "visible";
+  // document.getElementsByClassName('progress')[0].style.visibility = "hidden";
+  var values = bbandsData['Technical Analysis: BBANDS'];
+  var tick= "AAPL";
+  var realmiddle = [];
+  var realupper = [];
+  var reallower = [];
+  var dates = [];
+  var currentDate = new Date(bbandsData['Meta Data']['3: Last Refreshed']);
+  currentDate.setMonth(currentDate.getMonth() - 6);
+
+  for(var key in values){
+    var previousDate = new Date(key);
+
+    if(previousDate > currentDate){
+    dates.push(Date.parse(key));
+    var resultupper = parseFloat((parseFloat(values[key]["Real Upper Band"])).toFixed(2));
+    realupper.push(resultupper);
+    var resultlower = parseFloat((parseFloat(values[key]["Real Lower Band"])).toFixed(2));
+    reallower.push(resultlower);
+    var resultmiddle = parseFloat((parseFloat(values[key]["Real Middle Band"])).toFixed(2));
+    realmiddle.push(resultmiddle);
+
+  }
+  }
+
+
+  // alert(finalarr);
+
+var chart = new Highcharts.Chart({
+
+  chart: {
+      renderTo: 'renderContainer',
+      type: 'spline',
+      borderColor: '#f5f5f5',
+      borderWidth: 2
+  },
+  title: {
+      text: 'Bollinger Bands (BBANDS)'
+  },
+  subtitle: {
+    text: 'Source: <a href="https://www.alphavantage.co/"> Alpha Vantage</a>',
+    style: {
+     color: '#3333FF'
+ }
+ },
+
+  xAxis: {
+categories: dates,
+tickInterval:5,
+reversed: true,
+labels: {
+    format: '{value:%m/%d}',
+}
+},
+
+   yAxis: {
+       title: {
+           text: 'BBANDS'
+       }
+   },
+   legend: {
+       layout: 'vertical',
+       align: 'right',
+       verticalAlign: 'middle'
+   },
+
+
+   series: [{
+     name: tick+' Real Middle Band',
+     data: realmiddle,
+     color: '#000000',
+     marker: {
+         symbol: 'square',
+         lineColor: null,
+
+     },
+     lineWidth: 1
+   },
+ {
+   name: tick+' Real Upper Band',
+   data: realupper,
+   color: '#FF0000',
+   marker: {
+       symbol: 'square',
+       lineColor: null,
+
+   },
+   lineWidth: 1
+ },
+ {
+   name: tick+' Real Lower Band',
+   data: reallower,
+   color: '#66ff66',
+   marker: {
+       symbol: 'square',
+       lineColor: null,
+
+   },
+   lineWidth: 1
+ }
+],
+
+   plotOptions:{
+     spline:{
+       marker:{
+         radius: 2,
+         lineWidth:1
+       }
+     }
+   }
+
+
+ }
+);
+}
+}
+
+function macdCallback(){
+  if(!macdData){
+  //  document.getElementsByClassName('progress')[0].style.visibility = "visible";
+    // if(document.getElementById("renderContainer")){
+    //   document.getElementById("renderContainer").style.visibility = "hidden";
+    // }
+  }
+  else{
+//  document.getElementsByClassName('progress')[0].style.visibility = "hidden";
+  var values = macdData['Technical Analysis: MACD'];
+  var tick= "AAPL";
+  var macd = [];
+  var macdhist = [];
+  var macdsignal = [];
+  var dates = [];
+  var currentDate = new Date(macdData['Meta Data']['3: Last Refreshed']);
+  currentDate.setMonth(currentDate.getMonth() - 6);
+
+  for(var key in values){
+    var previousDate = new Date(key);
+
+    if(previousDate > currentDate){
+    dates.push(Date.parse(key));
+    var resultmacd = parseFloat((parseFloat(values[key]["MACD"])).toFixed(2));
+    macd.push(resultmacd);
+
+    var resulthist = parseFloat((parseFloat(values[key]["MACD_Hist"])).toFixed(2));
+    macdhist.push(resulthist);
+
+    var resultsignal = parseFloat((parseFloat(values[key]["MACD_Signal"])).toFixed(2));
+    macdsignal.push(resultsignal);
+
+  }
+  }
+
+
+  // alert(finalarr);
+
+var chart = new Highcharts.Chart({
+
+  chart: {
+      renderTo: 'renderContainer',
+      type: 'spline',
+      borderColor: '#f5f5f5',
+      borderWidth: 2
+  },
+  title: {
+      text: 'MACD'
+  },
+  subtitle: {
+    text: 'Source: <a href="https://www.alphavantage.co/"> Alpha Vantage</a>',
+    style: {
+     color: '#3333FF'
+ }
+ },
+
+  xAxis: {
+categories: dates,
+tickInterval:5,
+reversed: true,
+labels: {
+    format: '{value:%m/%d}',
+}
+},
+
+   yAxis: {
+       title: {
+           text: 'MACD'
+       }
+   },
+   tooltip: {
+            headerFormat: '<span style="font-size: 10px">{point.key:%m/%d}</span><br/>'
+          },
+   legend: {
+       layout: 'vertical',
+       align: 'right',
+       verticalAlign: 'middle'
+   },
+
+
+   series: [{
+     name: tick+' MACD',
+     data: macd,
+     color: '#000000',
+     marker: {
+         symbol: 'square',
+         lineColor: null,
+
+     },
+     lineWidth: 1
+   },
+ {
+   name: tick+' MACD_Hist',
+   data: macdhist,
+   color: '#FF0000',
+   marker: {
+       symbol: 'square',
+       lineColor: null,
+
+   },
+   lineWidth: 1
+ },
+ {
+   name: tick+' MACD_Signal',
+   data: macdsignal,
+   color: '#66ff66',
+   marker: {
+       symbol: 'square',
+       lineColor: null,
+
+   },
+   lineWidth: 1
+ }
+],
+
+   plotOptions:{
+     spline:{
+       marker:{
+         radius: 2,
+         lineWidth:1
+       }
+     }
+   }
+
+
+ }
+);
+}
+}
+
+function priceCallback(){
+  if(!priceData){
+    //  document.getElementsByClassName('progress')[0].style.visibility = "visible";
+  }
+  else{
+  //document.getElementsByClassName('progress')[0].style.visibility = "hidden";
+  var tick= "AAPL";
+  var values = priceData['Time Series (Daily)'];
+  var dates = [];
+  var price = [];
+  var volume = [];
+  var currentDate = new Date(priceData['Meta Data']['3. Last Refreshed']);
+  var fixedcurrentdate = new Date(currentDate);
+
+  // alert(currentDate);
+  currentDate.setMonth(currentDate.getMonth() - 6);
+
+  for(var key in values){
+
+    var previousDate = new Date(key);
+
+    if(previousDate > currentDate){
+    dates.push(Date.parse(key));
+    var key1 = values[key];
+    price.push(parseFloat(values[key]['4. close']));
+    volume.push(parseFloat(values[key]['5. volume']));
+  }
+  }
+  // alert(finalarr1);
+  // alert(finalarr);
+  maxVolume = Number.NEGATIVE_INFINITY;
+  minPrice = Number.POSITIVE_INFINITY;
+  // alert(dates.length);
+  for(var i = 0; i < price.length; i++ ){
+    if(price[i] < minPrice){
+      minPrice = price[i];
+    }
+  }
+  for(var i = 0; i < volume.length; i++ ){
+    if(volume[i] > maxVolume){
+      maxVolume = volume[i];
+    }
+  }
+
+  var dd = fixedcurrentdate.getDate();
+  var mm = fixedcurrentdate.getMonth() + 1;
+  var yyyy =fixedcurrentdate.getFullYear();
+  if(dd < 10){
+    dd = '0'+dd;
+  }
+  if(mm < 10){
+    mm = '0'+mm;
+  }
+  var fixedcurrentdate = mm+'/'+dd+'/'+yyyy;
+
+  Highcharts.chart('renderContainer', {
+    chart: {
+    borderColor: '#E9E7E7',
+    borderWidth: 2
+
+},
+          title: {
+              text: 'Stock Price ('+fixedcurrentdate+')'
+          },
+
+      subtitle: {
+           text: 'Source: <a href="https://www.alphavantage.co/"> Alpha Vantage</a>',
+           style: {
+            color: '#3333FF'
+        }
+      },
+
+          xAxis: {
+        categories: dates,
+        tickInterval:5,
+        reversed: true,
+        labels: {
+            format: '{value:%m/%d}',
+        }
+          },
+          yAxis: [{
+        min:minPrice-5,
+        tickInterval:5,
+              title:
+        {
+                  text: 'Stock Price'
+              }
+    },
+    {
+      //vol
+      title: {
+                text: 'Volume'
+                },
+                max: maxVolume * 3,
+                // labels: {
+                //     format: '{value} M'
+                // },
+                allowDecimals: false,
+                opposite: true,
+                type: 'linear',
+                startOnTick: true,
+                endOnTick: true,
+
+    }
+    ],
+    tooltip: {
+             headerFormat: '<span style="font-size: 10px">{point.key:%m/%d}</span><br/>'
+           },
+    legend: {
+      layout: 'vertical',
+      align: 'right',
+      verticalAlign: 'middle',
+      floating: false
+    },
+    plotOptions: {
+      area: {
+          marker: {
+              enabled: false
+          }
+      }
+  },
+          series: [{
+        name: tick,
+        zIndex:2,
+        color:'red',
+        type:'area',
+      data: price
+    },
+      {
+        name: tick+' Volume',
+        type:'column',
+        yAxis:1,
+        color:'#FFFFFF',
+        zIndex:8,
+        data: volume
+        }]
+    });
+
+}
+}
+
+function createTable(){
+  if(!priceData){
+
+  }
+  else{
+  var values = priceData['Time Series (Daily)'];
+  var count1 = 0;
+  var count2 = 0;
+  var key1;
+  var key2;
+  for(var key in values){
+    key1 = key;
+    count1++;
+    if(count1 == 1){
+      break;
+    }
+  }
+  for(var key in values){
+    key2 = key;
+    count2++;
+    if(count2 == 2){
+      break;
+    }
+  }
+
+  var currclose = values[key1]["4. close"];
+  var twocurrclose = parseFloat(currclose).toFixed(2);
+  var prevclose = values[key2]["4. close"];
+  var change = ((currclose - prevclose)/(prevclose))*100;
+  var changepercent = parseFloat(change).toFixed(2);
+  var curropen = (values[key1]["1. open"]);
+  var twocurropen = parseFloat(curropen).toFixed(2);
+  var currlow = values[key1]["3. low"];
+  var currhigh = values[key1]["2. high"];
+  var range = currlow+"-"+currhigh;
+  var currvolume = values[key1]["5. volume"];
+
+
+  $('#appendTable').append(
+    '<table width="420" border="1" height="430"><tr style="background-color:#F6F6F6;"><td><b>Stock Ticker Symbol</b></td><td>AAPL</td></tr><tr><td width="118"><b>Last Price</b></td><td width="186">' + twocurrclose + '</td></tr><tr style="background-color:#F6F6F6;"><td><b>Change(Change Percent)</b></td><td id="placehere">'+changepercent+'</td></tr><tr><td><b>Timestamp</b></td><td></td></tr><tr style="background-color:#F6F6F6;"><td><b>Open</b></td><td>'+twocurropen+'</td></tr><tr><td><b>Close</b></td><td>'+twocurrclose+'</td></tr><tr style="background-color:#F6F6F6;"><td><b>'+"Day's Range"+'</b></td><td>'+range+'</td></tr><tr><td><b>Volume</b></td><td>'+currvolume+'</td></tr></table>'
+  );
+  if(change > 0){
+    var x = document.createElement("IMG");
+    x.setAttribute("src", "http://cs-server.usc.edu:45678/hw/hw6/images/Green_Arrow_Up.png");
+    x.setAttribute("width", "20");
+    x.setAttribute("height", "20");
+    document.getElementById("placehere").appendChild(x);
+  }
+  else{
+    var x = document.createElement("IMG");
+    x.setAttribute("src", "http://cs-server.usc.edu:45678/hw/hw6/images/Red_Arrow_Down.png");
+    x.setAttribute("width", "20");
+    x.setAttribute("height", "20");
+    document.getElementById("placehere").appendChild(x);
+
+  }
+}
+}
+
+</script>
+
+
+</body>
+</html>
