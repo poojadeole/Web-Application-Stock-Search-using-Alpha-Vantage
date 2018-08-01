@@ -91,6 +91,30 @@
 
 </head>
 <body ng-controller="customerSearchCtrl as ctrl">
+   <?php
+  // define variables and set to empty values
+  ini_set('memory_limit', '1024M');
+  $nameErr = "";
+  $name = "";
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (empty($_POST["name"])) {
+      $nameErr = "Name is required";
+    } else {
+      $name = test_input($_POST["name"]);
+      // check if name only contains letters and whitespace
+      if (!preg_match("/^[a-zA-Z ]*$/",$name)) {
+        $nameErr = "Only letters and white space allowed";
+      }
+    }
+  }
+  function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+  }
+  ?>
+  
   <div class="container" style="margin-top:10px;" >
   <div class="well row">
     <div class="row">
@@ -277,6 +301,30 @@
   </div>
   </div>
 
+ <?php
+  // define variables and set to empty values
+  ini_set('memory_limit', '1024M');
+  $nameErr = "";
+  $name = "";
+  if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (empty($_POST["name"])) {
+      $nameErr = "Name is required";
+    } else {
+      $name = test_input($_POST["name"]);
+      // check if name only contains letters and whitespace
+      if (!preg_match("/^[a-zA-Z ]*$/",$name)) {
+        $nameErr = "Only letters and white space allowed";
+      }
+    }
+  }
+  function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+  }
+  ?>
+    
 <script>
 
 
