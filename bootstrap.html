@@ -445,15 +445,15 @@ function pooja(id,name){
 function onButton(){
   document.getElementById("first_div").style.display = "none";
   document.getElementById("second_div").style.display = "block";
-  pooja("AAPL","Price");
-  pooja("AAPL","SMA");
-  pooja("AAPL","EMA");
-  pooja("AAPL","STOCH");
-  pooja("AAPL","RSI");
-  pooja("AAPL","ADX");
-  pooja("AAPL","CCI");
-  pooja("AAPL","BBANDS");
-  pooja("AAPL","MACD");
+  pooja("<?php echo $name ?>","Price");
+  pooja("<?php echo $name ?>","SMA");
+  pooja("<?php echo $name ?>","EMA");
+  pooja("<?php echo $name ?>","STOCH");
+  pooja("<?php echo $name ?>","RSI");
+  pooja("<?php echo $name ?>","ADX");
+  pooja("<?php echo $name ?>","CCI");
+  pooja("<?php echo $name ?>","BBANDS");
+  pooja("<?php echo $name ?>","MACD");
 }
 
 
@@ -463,7 +463,7 @@ function emaCallback(){
   }
   else{
     //document.getElementsByClassName('progress')[0].style.visibility = "hidden";
-  var tick = "AAPL";
+  var tick = "<?php echo $name ?>";
   var values = emaData['Technical Analysis: EMA'];
   var dates = [];
   var smaplot = [];
@@ -560,7 +560,7 @@ function smaCallback(){
   else{
 //  document.getElementsByClassName('progress')[0].style.visibility = "hidden";
   console.log(smaData["Meta Data"]["2: Indicator"]);
-  var tick = "AAPL";
+  var tick = "<?php echo $name ?>";
   var values = smaData['Technical Analysis: SMA'];
   var dates = [];
   var smaplot = [];
@@ -662,7 +662,7 @@ function stochCallback(){
   var dates = [];
   var currentDate = new Date(stochData['Meta Data']['3: Last Refreshed']);
   currentDate.setMonth(currentDate.getMonth() - 6);
-  var tick = "AAPL";
+  var tick = "<?php echo $name ?>";
 
   for(var key in values){
     var previousDate = new Date(key);
@@ -769,7 +769,7 @@ function rsiCallback(){
 //  document.getElementsByClassName('progress')[0].style.visibility = "hidden";
   console.log(rsiData['Meta Data']['3: Last Refreshed']);
   var values = rsiData['Technical Analysis: RSI'];
-  var tick= "AAPL";
+  var tick= "<?php echo $name ?>";
   var dates = [];
   var rsiplot = [];
   var currentDate = new Date(rsiData['Meta Data']['3: Last Refreshed']);
@@ -867,7 +867,7 @@ function adxCallback(){
   else{
 //  document.getElementsByClassName('progress')[0].style.visibility = "hidden";
   var values = adxData['Technical Analysis: ADX'];
-  var tick= "AAPL";
+  var tick= "<?php echo $name ?>";
   var dates = [];
   var adxplot = [];
   var currentDate = new Date(adxData['Meta Data']['3: Last Refreshed']);
@@ -966,7 +966,7 @@ function cciCallback(){
   else{
   //    document.getElementsByClassName('progress')[0].style.visibility = "hidden";
   var values = cciData['Technical Analysis: CCI'];
-  var tick= "AAPL";
+  var tick= "<?php echo $name ?>";
   var dates = [];
   var cciplot = [];
   var currentDate = new Date(cciData['Meta Data']['3: Last Refreshed']);
@@ -1065,7 +1065,7 @@ function bbandsCallback(){
   // document.getElementById("renderContainer").style.visibility = "visible";
   // document.getElementsByClassName('progress')[0].style.visibility = "hidden";
   var values = bbandsData['Technical Analysis: BBANDS'];
-  var tick= "AAPL";
+  var tick= "<?php echo $name ?>";
   var realmiddle = [];
   var realupper = [];
   var reallower = [];
@@ -1190,7 +1190,7 @@ function macdCallback(){
   else{
 //  document.getElementsByClassName('progress')[0].style.visibility = "hidden";
   var values = macdData['Technical Analysis: MACD'];
-  var tick= "AAPL";
+  var tick= "<?php echo $name ?>";
   var macd = [];
   var macdhist = [];
   var macdsignal = [];
@@ -1316,7 +1316,7 @@ function priceCallback(){
   }
   else{
   //document.getElementsByClassName('progress')[0].style.visibility = "hidden";
-  var tick= "AAPL";
+  var tick= "<?php echo $name ?>";
   var values = priceData['Time Series (Daily)'];
   var dates = [];
   var price = [];
